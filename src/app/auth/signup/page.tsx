@@ -44,9 +44,9 @@ export default function Signup() {
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl border-t-8 border-red-600">
         <div>
           <div className="mx-auto h-12 w-12 bg-red-600 rounded flex items-center justify-center text-white text-3xl font-bold">+</div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create Patient Account</h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create HERWA Account</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Join the HERWA emergency network
+            Join the HERWA medical network
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSignup}>
@@ -83,7 +83,7 @@ export default function Signup() {
               disabled={loading}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-md"
             >
-              {loading ? "Registering..." : "REGISTER AS PATIENT"}
+              {loading ? "Creating..." : "CREATE ACCOUNT"}
             </button>
           </div>
           {message && <div className="text-center text-sm font-medium text-red-600">{message}</div>}
