@@ -33,10 +33,36 @@ export default function AdminDashboard() {
   const [emergencies, setEmergencies] = useState<Emergency[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [role, setRole] = useState<string | null>(null);
   const [iconsReady, setIconsReady] = useState(false);
 
   useEffect(() => {
-    // Initialize icons only on the client side
+    // 1. Check Auth & Role
+    const checkRole = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setRole('unauthenticated');
+        setLoading(false);
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from('patient_profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+      setRole(profile?.role || 'patient');
+      if (profile?.role === 'admin') {
+        fetchEmergencies();
+      } else {
+        setLoading(false);
+      }
+    };
+
+    checkRole();
+
+    // 2. Initialize icons
     if (typeof window !== "undefined") {
       const Leaflet = require("leaflet");
       redIcon = new Leaflet.Icon({
@@ -58,23 +84,13 @@ export default function AdminDashboard() {
       setIconsReady(true);
     }
 
-    // 1. Initial Fetch
-    fetchEmergencies();
-
-    // 2. Realtime Subscription as per SRS
+    // 3. Realtime Subscription
     const subscription = supabase
       .channel('emergencies_channel')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'emergencies' }, (payload) => {
         const newEmergency = payload.new as Emergency;
         setEmergencies((prev) => [newEmergency, ...prev]);
-        
-        // Play alert sound if supported
         try { new Audio('/alert.mp3').play(); } catch(e) {}
-      })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'emergencies' }, (payload) => {
-          setEmergencies((prev) => 
-            prev.map(item => item.id === payload.new.id ? payload.new as Emergency : item)
-          );
       })
       .subscribe();
 
@@ -97,6 +113,25 @@ export default function AdminDashboard() {
   const updateStatus = async (id: string, newStatus: string) => {
     await supabase.from("emergencies").update({ status: newStatus }).eq("id", id);
   };
+
+  if (loading) {
+    return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white font-black text-2xl animate-pulse italic">ESTABLISHING UPLINK...</div>;
+  }
+
+  if (role !== 'admin') {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="bg-white p-12 rounded-3xl shadow-2xl border-t-8 border-red-600 text-center max-w-lg">
+          <div className="text-6xl mb-6">🚫</div>
+          <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase italic leading-tight">Access Denied</h2>
+          <p className="text-gray-500 font-medium leading-relaxed mb-8">
+            This module is restricted to authorized HERWA Staff only. Please contact the Medical Director to escalate your credentials.
+          </p>
+          <a href="/" className="bg-red-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-red-700 transition-all shadow-lg inline-block">RETURN TO HOME</a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
