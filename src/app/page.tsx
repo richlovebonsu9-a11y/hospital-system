@@ -1,8 +1,27 @@
-"use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { User } from "@supabase/supabase-js";
+import Link from "next/link";
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Top Bar */}
@@ -24,15 +43,18 @@ export default function Home() {
             <span className="text-2xl font-bold text-slate-800">HERWA</span>
           </div>
           <nav className="hidden md:flex gap-8 font-medium text-slate-600">
-            <a href="#" className="text-red-600">Home</a>
-            <a href="#" className="hover:text-red-500">About</a>
-            <a href="#" className="hover:text-red-500">Services</a>
-            <a href="#" className="hover:text-red-500">Patients</a>
-            <a href="#" className="hover:text-red-500">Emergency</a>
+            <Link href="/" className="text-red-600">Home</Link>
+            <Link href="#" className="hover:text-red-500">About</Link>
+            <Link href="#" className="hover:text-red-500">Services</Link>
+            {user ? (
+              <button onClick={handleSignOut} className="hover:text-red-500">Sign Out</button>
+            ) : (
+              <Link href="/auth/login" className="hover:text-red-500">Sign In</Link>
+            )}
           </nav>
-          <button className="bg-red-600 text-white px-6 py-2 rounded-md font-bold hover:bg-red-700 transition-colors">
+          <Link href="/sos" className="bg-red-600 text-white px-6 py-2 rounded-md font-bold hover:bg-red-700 transition-colors">
             SOS EMERGENCY
-          </button>
+          </Link>
         </div>
       </header>
 
