@@ -116,27 +116,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Services Grid & Resource Navigation */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
-          <span className="text-red-600 font-bold uppercase tracking-widest text-xs">What We Offer</span>
-          <h2 className="section-title mt-2">Emergency Based Solutions</h2>
+          <span className="text-red-600 font-bold uppercase tracking-widest text-xs">Command & Control</span>
+          <h2 className="section-title mt-2">Hospital Resource Center</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
             {[ 
-              { title: "Heart Surgery", icon: "❤️" },
-              { title: "Valve Disease", icon: "🧬" },
-              { title: "CT-Triage", icon: "⚡" },
-              { title: "Dispatch", icon: "🚑" } 
+              { title: "Bed Monitor", icon: "🛏️", link: "/dashboard/beds", desc: "Live availability status across all ICU and Emergency wards." },
+              { title: "Appointments", icon: "📅", link: "/dashboard/appointments", desc: "Book specialist consultations and view doctor schedules." },
+              { title: "Live Command", icon: "📡", link: "/admin/dashboard", desc: "Admin only: Real-time emergency queue and GPS tracking." },
+              { title: "Emergency SOS", icon: "🚀", link: "/sos", desc: "Instant patient intake and live symptom reporting." } 
             ].map((service, i) => (
-              <div key={i} className="p-8 border rounded-xl hover:border-red-600 group transition-all cursor-pointer">
+              <Link key={i} href={service.link} className="p-8 border rounded-xl hover:border-red-600 group transition-all cursor-pointer block">
                 <div className="w-16 h-16 bg-red-50 text-3xl flex items-center justify-center rounded-full mx-auto group-hover:bg-red-600 group-hover:text-white transition-all">
                   {service.icon}
                 </div>
                 <h3 className="text-xl font-bold mt-6 text-slate-800">{service.title}</h3>
-                <p className="text-gray-500 mt-4 text-sm">Providing top-tier emergency medical care 24/7.</p>
-                <div className="mt-4 text-red-600 font-bold">Read More →</div>
-              </div>
+                <p className="text-gray-500 mt-4 text-xs leading-relaxed">{service.desc}</p>
+                <div className="mt-4 text-red-600 font-bold text-xs uppercase italic tracking-widest">Access Module →</div>
+              </Link>
             ))}
           </div>
         </div>

@@ -128,6 +128,12 @@ export default function AdminDashboard() {
                        </span>
                        <h3 className="mt-2 text-xl font-bold text-slate-900">{e.symptoms}</h3>
                        <p className="text-xs text-gray-400 mt-1 font-mono">ID: {e.id.split('-')[0]}</p>
+                       <div className="mt-3 flex items-center gap-2">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                          <span className="text-[10px] font-bold text-purple-600 uppercase italic">
+                            AI Suggestion: {e.severity_level >= 4 ? "IMMEDIATE DISPATCH" : "OBSERVATION RECOMMENDED"}
+                          </span>
+                       </div>
                      </div>
                      <div className="text-right">
                         <span className="block text-xs font-bold text-gray-500 uppercase">{new Date(e.created_at).toLocaleTimeString()}</span>

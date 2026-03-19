@@ -9,8 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/react": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
     "@supabase/supabase-js": "^2.99.3",
     "@types/leaflet": "^1.9.21",
+    "darkreader": "^4.9.120",
     "leaflet": "^1.9.4",
     "next": "16.2.0",
     "react": "19.2.4",
