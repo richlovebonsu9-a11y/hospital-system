@@ -13,24 +13,9 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { 
 
 import L from "leaflet";
 
-// Fix for default marker icons in Leaflet + Next.js
-const redIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-const blueIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// Icons will be initialized in useEffect to avoid SSR "window is not defined" errors
+let redIcon: any;
+let blueIcon: any;
 
 interface Emergency {
   id: string;
@@ -46,7 +31,31 @@ export default function AdminDashboard() {
   const [emergencies, setEmergencies] = useState<Emergency[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [iconsReady, setIconsReady] = useState(false);
+
   useEffect(() => {
+    // Initialize icons only on the client side
+    if (typeof window !== "undefined") {
+      const Leaflet = require("leaflet");
+      redIcon = new Leaflet.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+      blueIcon = new Leaflet.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+      setIconsReady(true);
+    }
+
     // 1. Initial Fetch
     fetchEmergencies();
 
@@ -195,24 +204,26 @@ export default function AdminDashboard() {
            {/* Emergency Map View */}
            <div className="bg-white p-4 rounded-xl shadow-md border-t-4 border-red-600">
               <h3 className="font-black text-slate-800 uppercase text-xs mb-4 tracking-wider">Live Incident Map</h3>
-              <div className="h-[300px] bg-gray-100 rounded-lg overflow-hidden relative">
-                <MapContainer center={[40.7128, -74.0060]} zoom={13} style={{ height: '100%', width: '100%' }}>
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  {emergencies.map((e) => e.location_lat && e.location_lng && (
-                    <Marker 
-                      key={e.id} 
-                      position={[e.location_lat, e.location_lng]} 
-                      icon={e.severity_level >= 4 ? redIcon : blueIcon}
-                    >
-                      <Popup>
-                        <div className="text-xs">
-                          <p className="font-bold">Severity: {e.severity_level}</p>
-                          <p>{e.symptoms}</p>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
-                </MapContainer>
+               <div className="h-[300px] bg-gray-100 rounded-lg overflow-hidden relative">
+                {iconsReady && (
+                  <MapContainer center={[40.7128, -74.0060]} zoom={13} style={{ height: '100%', width: '100%' }}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    {emergencies.map((e) => e.location_lat && e.location_lng && (
+                      <Marker 
+                        key={e.id} 
+                        position={[e.location_lat, e.location_lng]} 
+                        icon={e.severity_level >= 4 ? redIcon : blueIcon}
+                      >
+                        <Popup>
+                          <div className="text-xs">
+                            <p className="font-bold">Severity: {e.severity_level}</p>
+                            <p>{e.symptoms}</p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    ))}
+                  </MapContainer>
+                )}
               </div>
            </div>
         </div>
