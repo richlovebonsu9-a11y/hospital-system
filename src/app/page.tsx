@@ -29,8 +29,8 @@ export default function Home() {
   const NavLinks = () => (
     <>
       <Link href="/" className="text-red-600 md:text-red-600 block md:inline" onClick={() => setIsMenuOpen(false)}>Home</Link>
-      <Link href="#" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>About</Link>
-      <Link href="#" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>Services</Link>
+      <Link href="/about" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>About</Link>
+      <Link href="/services" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>Services</Link>
       {user ? (
         <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="hover:text-red-500 block md:inline text-left">Sign Out</button>
       ) : (
@@ -188,9 +188,9 @@ export default function Home() {
           <div>
             <h4 className="text-white font-bold mb-6">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-red-500">About Us</a></li>
+              <li><Link href="/about" className="hover:text-red-500">About Us</Link></li>
               <li><a href="#" className="hover:text-red-500">Doctors</a></li>
-              <li><a href="#" className="hover:text-red-500">Services</a></li>
+              <li><Link href="/services" className="hover:text-red-500">Services</Link></li>
             </ul>
           </div>
           <div>
