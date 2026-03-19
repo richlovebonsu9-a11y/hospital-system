@@ -101,17 +101,17 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
       {/* Admin Header */}
-      <header className="bg-slate-900 text-white p-4 items-center flex justify-between">
+      <header className="bg-slate-900 text-white p-3 md:p-4 items-center flex justify-between sticky top-0 z-50">
         <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-white uppercase tracking-tighter">HQ</div>
-            <h1 className="text-xl font-black">HERWA COMMAND CENTER</h1>
+            <div className="w-6 h-6 md:w-8 md:h-8 bg-red-600 rounded flex items-center justify-center font-bold text-white uppercase tracking-tighter text-xs md:text-base">HQ</div>
+            <h1 className="text-sm md:text-xl font-black tracking-tight md:tracking-normal">HERWA COMMAND CENTER</h1>
         </div>
-        <div className="flex gap-4 items-center">
-            <span className="flex items-center gap-2 text-xs text-green-400 font-bold">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
-                SYSTEM LIVE
+        <div className="flex gap-2 md:gap-4 items-center">
+            <span className="flex items-center gap-1 md:gap-2 text-[8px] md:text-xs text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-full">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full animate-ping"></div>
+                LIVE
             </span>
-            <div className="w-10 h-10 bg-slate-700 rounded-full"></div>
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-700 rounded-full border-2 border-slate-600"></div>
         </div>
       </header>
 

@@ -89,9 +89,9 @@ export default function SOSPanel() {
   return (
     <div className="min-h-screen bg-white p-4 md:p-8">
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl border-4 border-red-600 overflow-hidden">
-        <div className="bg-red-600 p-8 text-white text-center">
-            <h1 className="text-4xl font-black italic">SOS EMERGENCY</h1>
-            <p className="mt-2 text-red-100 font-bold uppercase tracking-widest text-sm">Real-time Prompt to Admin Dashboard</p>
+        <div className="bg-red-600 p-4 md:p-8 text-white text-center">
+            <h1 className="text-2xl md:text-4xl font-black italic">SOS EMERGENCY</h1>
+            <p className="mt-2 text-red-100 font-bold uppercase tracking-widest text-[10px] md:text-sm">Real-time Prompt to Admin Dashboard</p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-8">
