@@ -20,9 +20,24 @@ export default function Home() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
+
+  const NavLinks = () => (
+    <>
+      <Link href="/" className="text-red-600 md:text-red-600 block md:inline" onClick={() => setIsMenuOpen(false)}>Home</Link>
+      <Link href="#" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>About</Link>
+      <Link href="#" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>Services</Link>
+      {user ? (
+        <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="hover:text-red-500 block md:inline text-left">Sign Out</button>
+      ) : (
+        <Link href="/auth/login" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+      )}
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-white">
@@ -39,24 +54,38 @@ export default function Home() {
 
       {/* Main Navigation */}
       <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-red-600 rounded flex items-center justify-center text-white font-bold text-xl">+</div>
-            <span className="text-xl md:text-2xl font-bold text-slate-800">HERWA</span>
-          </Link>
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between relative">
+          <div className="flex items-center gap-4">
+            {/* Hamburger Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="md:hidden text-slate-800 p-2 focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              <div className="w-6 h-0.5 bg-slate-800 mb-1"></div>
+              <div className="w-6 h-0.5 bg-slate-800 mb-1"></div>
+              <div className="w-6 h-0.5 bg-slate-800"></div>
+            </button>
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 bg-red-600 rounded flex items-center justify-center text-white font-bold text-xl">+</div>
+              <span className="text-xl md:text-2xl font-bold text-slate-800">HERWA</span>
+            </Link>
+          </div>
+
           <nav className="hidden md:flex gap-8 font-medium text-slate-600">
-            <Link href="/" className="text-red-600">Home</Link>
-            <Link href="#" className="hover:text-red-500">About</Link>
-            <Link href="#" className="hover:text-red-500">Services</Link>
-            {user ? (
-              <button onClick={handleSignOut} className="hover:text-red-500">Sign Out</button>
-            ) : (
-              <Link href="/auth/login" className="hover:text-red-500">Sign In</Link>
-            )}
+            <NavLinks />
           </nav>
+          
           <Link href="/sos" className="bg-red-600 text-white px-4 md:px-6 py-2 rounded-md font-bold hover:bg-red-700 transition-colors text-xs md:text-base">
             SOS EMERGENCY
           </Link>
+
+          {/* Mobile Menu Dropdown */}
+          {isMenuOpen && (
+            <div className="absolute top-20 left-0 w-full bg-white border-b shadow-xl p-6 flex flex-col gap-6 md:hidden animate-in slide-in-from-top duration-300 font-bold text-slate-800 z-50">
+              <NavLinks />
+            </div>
+          )}
         </div>
       </header>
 
