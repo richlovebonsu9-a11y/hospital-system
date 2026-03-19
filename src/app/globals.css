@@ -22,26 +22,44 @@
   --btn-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
 }
 
-@layer base {
-  body {
-    @apply bg-white text-gray-800 font-sans;
-  }
+:root {
+  /* Medical Red & White Palette */
+  --medical-red: #E53E3E;
+  --medical-red-dark: #C53030;
+  --medical-red-light: #FFF5F5;
+  --medical-blue: #0047AB;
+  
+  --background: #FFFFFF;
+  --foreground: #2D3748;
 }
 
-@layer components {
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
-  }
-  
-  .btn-primary {
-    @apply bg-[var(--medical-red)] text-white px-8 py-3 rounded-md font-bold transition-all hover:bg-[var(--medical-red-dark)] hover:-translate-y-1 shadow-lg;
-  }
-  
-  .section-title {
-    @apply text-4xl font-extrabold tracking-tight text-gray-900 mb-4;
-  }
-  
-  .red-dot {
-    @apply inline-block w-2 h-2 rounded-full bg-[var(--medical-red)] mr-2;
-  }
+body {
+  background-color: white;
+  color: #2D3748;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Base Utility Classes */
+.btn-primary {
+  background-color: var(--medical-red);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--medical-red-dark);
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 1rem;
 }
