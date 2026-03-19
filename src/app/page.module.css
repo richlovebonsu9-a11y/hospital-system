@@ -1,142 +1,222 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
+.container {
   display: flex;
-  flex: 1;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.navContent {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  background: var(--emergency-red);
+  color: white;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  font-weight: 800;
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(229, 62, 62, 0.4);
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+  font-weight: 500;
+}
+
+.navLinks a {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.navLinks a.active {
+  color: var(--primary-blue);
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.statusIndicator {
+  width: 10px;
+  height: 10px;
+  background: var(--success-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--success-green);
 }
 
 .main {
-  display: flex;
   flex: 1;
   width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+.hero {
+  margin-bottom: 4rem;
+  animation: fadeIn 0.8s ease-out;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(49, 130, 206, 0.1);
+  color: var(--primary-blue-light);
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+.title {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  max-width: 800px;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 600px;
 }
 
-.ctas {
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.card {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.ctas a {
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.emergencyCard {
+  border-left: 4px solid var(--emergency-red);
+}
+
+.card h3 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.metric {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.metric span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-left: 0.25rem;
+}
+
+.actionSection {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  gap: 1rem;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.primaryBtn {
+  padding: 1rem 2.5rem;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 71, 171, 0.3);
+  transition: var(--transition-fast);
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.primaryBtn:hover {
+  background: var(--primary-blue-light);
+  transform: translateY(-2px);
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.secondaryBtn {
+  padding: 1rem 2.5rem;
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-fast);
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+.secondaryBtn:hover {
+  border-color: var(--primary-blue-light);
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
+.footer {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border);
+}
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+@media (max-width: 768px) {
+  .title { font-size: 2.5rem; }
+  .header { padding: 0 1rem; }
+  .navLinks { display: none; }
+  .metric { font-size: 3rem; }
 }

@@ -1,49 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Medical Red & White Palette */
+  --medical-red: #E53E3E;
+  --medical-red-dark: #C53030;
+  --medical-red-light: #FFF5F5;
+  --medical-blue: #0047AB;
+  
+  --background: #FFFFFF;
+  --foreground: #2D3748;
+  
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --btn-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-white text-gray-800 font-sans;
   }
 }
 
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .btn-primary {
+    @apply bg-[var(--medical-red)] text-white px-8 py-3 rounded-md font-bold transition-all hover:bg-[var(--medical-red-dark)] hover:-translate-y-1 shadow-lg;
+  }
+  
+  .section-title {
+    @apply text-4xl font-extrabold tracking-tight text-gray-900 mb-4;
+  }
+  
+  .red-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-[var(--medical-red)] mr-2;
   }
 }
