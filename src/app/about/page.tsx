@@ -9,7 +9,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="bg-slate-900 py-20 text-white relative overflow-hidden">
         <div className="container mx-auto px-4 z-10 relative">
-          <Link href="/" className="text-red-500 font-bold mb-8 block hover:underline">← BACK TO HOME</Link>
+          <a href="/" className="text-red-500 font-bold mb-8 block hover:underline cursor-pointer">← BACK TO HOME</a>
           <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
             Our Mission: <br />
             <span className="text-red-600 italic">Life First.</span>

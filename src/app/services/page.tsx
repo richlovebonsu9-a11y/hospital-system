@@ -16,7 +16,7 @@ export default function ServicesPage() {
       {/* Header Banner */}
       <section className="bg-red-600 py-16 text-white text-center">
         <div className="container mx-auto px-4">
-            <Link href="/" className="text-red-100 font-bold mb-4 block hover:underline text-sm uppercase tracking-widest">Back to Hub</Link>
+            <a href="/" className="text-red-100 font-bold mb-4 block hover:underline text-sm uppercase tracking-widest cursor-pointer">← BACK TO HUB</a>
             <h1 className="text-5xl md:text-7xl font-black italic">OUR SERVICES</h1>
             <p className="mt-4 text-red-100 max-w-xl mx-auto font-bold uppercase tracking-tighter">Comprehensive emergency medicine for the digital age.</p>
         </div>
