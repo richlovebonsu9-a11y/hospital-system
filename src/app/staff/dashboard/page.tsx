@@ -24,10 +24,10 @@ export default function StaffDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      const userRole = profile?.role || session.user.user_metadata?.role || 'patient';
+      const userRole = session.user.user_metadata?.role || profile?.role || 'patient';
 
       if (userRole !== 'staff' && userRole !== 'admin') {
-         // ...
+         // Access handled by auth logic
       }
 
       setUser({ ...session.user, ...profile, role: userRole });

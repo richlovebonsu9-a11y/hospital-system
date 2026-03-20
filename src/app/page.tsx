@@ -20,7 +20,8 @@ export default function Home() {
           .select('role')
           .eq('id', session.user.id)
           .single();
-        setRole(profile?.role || session.user.user_metadata?.role || 'patient');
+        const userRole = session.user.user_metadata?.role || profile?.role || 'patient';
+        setRole(userRole);
       } else {
         setRole(null);
       }

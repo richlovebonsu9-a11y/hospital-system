@@ -52,7 +52,8 @@ export default function AdminDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      const userRole = profile?.role || session.user.user_metadata?.role || 'patient';
+      const userRole = session.user.user_metadata?.role || profile?.role || 'patient';
+      console.log('Login attempt:', { profileRole: profile?.role, metadataRole: session.user.user_metadata?.role, resolvedRole: userRole });
       setRole(userRole);
       
       if (userRole === 'admin') {
