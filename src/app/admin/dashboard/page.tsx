@@ -52,8 +52,10 @@ export default function AdminDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      setRole(profile?.role || 'patient');
-      if (profile?.role === 'admin') {
+      const userRole = profile?.role || session.user.user_metadata?.role || 'patient';
+      setRole(userRole);
+      
+      if (userRole === 'admin') {
         fetchEmergencies();
       } else {
         setLoading(false);

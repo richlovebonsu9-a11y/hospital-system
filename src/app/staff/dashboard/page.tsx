@@ -24,12 +24,13 @@ export default function StaffDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      if (profile?.role !== 'staff' && profile?.role !== 'admin') {
-         // If patient tries to access staff dashboard
-         // We'll handle this more strictly later
+      const userRole = profile?.role || session.user.user_metadata?.role || 'patient';
+
+      if (userRole !== 'staff' && userRole !== 'admin') {
+         // ...
       }
 
-      setUser({ ...session.user, ...profile });
+      setUser({ ...session.user, ...profile, role: userRole });
       setLoading(false);
     };
 

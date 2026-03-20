@@ -24,15 +24,13 @@ export default function PatientDashboard() {
         .eq('id', session.user.id)
         .single();
 
-      if (profile?.role !== 'patient') {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        if (currentSession?.user) {
-           // If they have a different role, they shouldn't be here, but we'll let them stay for now or redirect
-           // Actually, the login logic should handle this.
-        }
+      const userRole = profile?.role || session.user.user_metadata?.role || 'patient';
+      
+      if (userRole !== 'patient') {
+        // ... handled by login/signup redirection
       }
 
-      setUser({ ...session.user, ...profile });
+      setUser({ ...session.user, ...profile, role: userRole });
       setLoading(false);
     };
 

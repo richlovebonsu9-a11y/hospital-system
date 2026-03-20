@@ -52,7 +52,15 @@ export default function Signup() {
     if (error) {
       setMessage(error.message);
       setLoading(false);
-    } else {
+    } else if (data.user) {
+      // Manually upsert profile to ensure role is set correctly
+      // (as a fallback in case the database trigger is slow/missing)
+      await supabase.from('patient_profiles').upsert({
+        id: data.user.id,
+        full_name: fullName,
+        role: finalRole,
+      });
+
       setMessage("Account created! Synchronizing systems...");
       
       // Automatic Login for seamless experience

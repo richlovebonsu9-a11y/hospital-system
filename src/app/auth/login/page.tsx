@@ -33,7 +33,7 @@ export default function Login() {
         .eq('id', data.user.id)
         .single();
       
-      const role = profile?.role || 'patient';
+      const role = profile?.role || data.user.user_metadata?.role || 'patient';
       
       setMessage("Authenticated. Redirecting to terminal...");
       
