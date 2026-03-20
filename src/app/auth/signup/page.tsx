@@ -1,4 +1,5 @@
 "use client";
+// BUILD TRIGGER: 1773961903 (RBAC & Multi-page navigation sync)
 
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabase";
