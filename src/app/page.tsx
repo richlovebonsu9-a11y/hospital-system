@@ -7,14 +7,34 @@ import Link from "next/link";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const fetchSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
-    });
+      
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from('patient_profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+        setRole(profile?.role || 'patient');
+      } else {
+        setRole(null);
+      }
+    };
+
+    fetchSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchSession();
+      } else {
+        setRole(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -31,6 +51,9 @@ export default function Home() {
       <Link href="/" className="text-red-600 md:text-red-600 block md:inline" onClick={() => setIsMenuOpen(false)}>Home</Link>
       <Link href="/about" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>About</Link>
       <Link href="/services" className="hover:text-red-500 block md:inline" onClick={() => setIsMenuOpen(false)}>Services</Link>
+      {role === 'admin' && (
+        <Link href="/admin/dashboard" className="text-red-600 font-black block md:inline uppercase italic underline decoration-2 underline-offset-4" onClick={() => setIsMenuOpen(false)}>Command Center</Link>
+      )}
       {user ? (
         <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="hover:text-red-500 block md:inline text-left">Sign Out</button>
       ) : (
