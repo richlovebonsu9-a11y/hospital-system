@@ -54,6 +54,12 @@ export default function Home() {
       {role === 'admin' && (
         <Link href="/admin/dashboard" className="text-red-600 font-black block md:inline uppercase italic underline decoration-2 underline-offset-4" onClick={() => setIsMenuOpen(false)}>Command Center</Link>
       )}
+      {role === 'staff' && (
+        <Link href="/staff/dashboard" className="text-red-600 font-black block md:inline uppercase italic underline decoration-2 underline-offset-4" onClick={() => setIsMenuOpen(false)}>Staff Portal</Link>
+      )}
+      {role === 'patient' && (
+        <Link href="/patient/dashboard" className="text-red-600 font-black block md:inline uppercase italic underline decoration-2 underline-offset-4" onClick={() => setIsMenuOpen(false)}>My Health</Link>
+      )}
       {user ? (
         <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="hover:text-red-500 block md:inline text-left">Sign Out</button>
       ) : (

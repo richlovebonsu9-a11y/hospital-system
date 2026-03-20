@@ -17,64 +17,110 @@ export default function Login() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setMessage(error.message);
-    } else {
-      router.push("/");
+      setLoading(false);
+    } else if (data.user) {
+      // Fetch role for redirection
+      const { data: profile } = await supabase
+        .from('patient_profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+      
+      const role = profile?.role || 'patient';
+      
+      setMessage("Authenticated. Redirecting to terminal...");
+      
+      setTimeout(() => {
+        if (role === 'admin') router.push("/admin/dashboard");
+        else if (role === 'staff') router.push("/staff/dashboard");
+        else router.push("/patient/dashboard");
+      }, 1000);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl border-t-8 border-red-600">
-        <div>
-          <div className="mx-auto h-12 w-12 bg-red-600 rounded flex items-center justify-center text-white text-3xl font-bold">+</div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to HERWA</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Emergency Management Access
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <input
-              type="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 selection:bg-red-500 selection:text-white">
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-red-600/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+      </div>
+
+      <div className="w-full max-w-md relative">
+        <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl p-8 md:p-12">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-600/20 text-white text-3xl font-black mb-6 transform hover:-rotate-12 transition-transform cursor-pointer">+</div>
+            <h1 className="text-4xl font-black text-white tracking-tighter italic">UNIT LOGIN</h1>
+            <p className="text-slate-400 mt-2 text-sm font-medium uppercase tracking-[0.2em]">Secure Authentication Required</p>
           </div>
 
-          <div>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-4">
+              <div className="relative group">
+                <input
+                  type="email"
+                  required
+                  placeholder="Registry Email"
+                  className="w-full bg-slate-800/50 border border-white/5 rounded-2xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all group-hover:bg-slate-800/80"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="relative group">
+                <input
+                  type="password"
+                  required
+                  placeholder="Cipher Key (Password)"
+                  className="w-full bg-slate-800/50 border border-white/5 rounded-2xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all group-hover:bg-slate-800/80"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all shadow-md"
+              className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white font-black py-4 rounded-2xl shadow-xl shadow-red-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:hover:scale-100 uppercase tracking-widest text-sm"
             >
-              {loading ? "Signing in..." : "SIGN IN"}
+              {loading ? "VERIFYING CREDENTIALS..." : "START SESSION"}
             </button>
-          </div>
-          {message && <div className="text-center text-sm font-medium text-red-600">{message}</div>}
-          <div className="text-center mt-4">
-               <Link href="/auth/signup" className="text-sm text-gray-600 hover:text-red-600">Don't have an account? Sign up</Link>
-          </div>
-        </form>
+
+            {message && (
+              <div className={`text-center text-sm font-bold p-4 rounded-xl animate-bounce ${message.includes("Redirecting") ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}`}>
+                {message}
+              </div>
+            )}
+
+            <div className="text-center pt-4">
+              <Link href="/auth/signup" className="text-slate-400 hover:text-white text-xs font-bold transition-colors uppercase tracking-widest">
+                New Recruit? <span className="text-red-500 underline underline-offset-4">Register Account</span>
+              </Link>
+            </div>
+          </form>
+        </div>
+
+        {/* Status indicator mockup */}
+        <div className="flex justify-center gap-6 mt-8 opacity-20">
+           <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <span className="text-[8px] font-black text-white tracking-widest uppercase">Encryption Active</span>
+           </div>
+           <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+              <span className="text-[8px] font-black text-white tracking-widest uppercase">Vault Secure</span>
+           </div>
+        </div>
       </div>
     </div>
   );
 }
+
