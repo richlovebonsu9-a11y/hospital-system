@@ -124,10 +124,17 @@ export default function AdminDashboard() {
         <div className="bg-white p-12 rounded-3xl shadow-2xl border-t-8 border-red-600 text-center max-w-lg">
           <div className="text-6xl mb-6">🚫</div>
           <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase italic leading-tight">Access Denied</h2>
+          <div className="bg-slate-50 p-4 rounded-xl mb-8 border border-slate-200">
+             <p className="text-xs font-bold text-slate-400 uppercase mb-1">Current Identity</p>
+             <p className="text-sm font-black text-slate-900">{role === 'unauthenticated' ? 'Not Logged In' : `Detected Role: ${role?.toUpperCase()}`}</p>
+          </div>
           <p className="text-gray-500 font-medium leading-relaxed mb-8">
-            This module is restricted to authorized HERWA Staff only. Please contact the Medical Director to escalate your credentials.
+            This module is restricted to authorized HERWA Staff only. If you just signed up with a secret code, please ensure you used **HERWA2026**.
           </p>
-          <a href="/" className="bg-red-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-red-700 transition-all shadow-lg inline-block">RETURN TO HOME</a>
+          <div className="flex flex-col gap-3">
+            <a href="/auth/login" className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg inline-block">SIGN IN AS DIFFERENT USER</a>
+            <a href="/" className="text-slate-400 text-sm font-bold hover:text-slate-600 transition-all">Back to Home</a>
+          </div>
         </div>
       </div>
     );
